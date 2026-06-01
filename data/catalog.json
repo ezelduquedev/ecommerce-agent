@@ -1,0 +1,227 @@
+[
+  {
+    "id": "prod-elec-001",
+    "name": "Auriculares Sony WH-1000XM5",
+    "category": "Electrónica",
+    "price": 279.99,
+    "rating": 4.9,
+    "stock": 12,
+    "description": "Auriculares inalámbricos con cancelación de ruido líder del sector. Hasta 30h de batería, micrófono integrado y plegables para viaje."
+  },
+  {
+    "id": "prod-elec-002",
+    "name": "Teclado Mecánico Keychron K2 Pro",
+    "category": "Electrónica",
+    "price": 99.99,
+    "rating": 4.7,
+    "stock": 8,
+    "description": "Teclado mecánico compacto 75% con iluminación RGB por tecla, conexión Bluetooth y USB-C. Compatible con Windows y macOS."
+  },
+  {
+    "id": "prod-elec-003",
+    "name": "Altavoz Portátil JBL Charge 5",
+    "category": "Electrónica",
+    "price": 149.99,
+    "rating": 4.6,
+    "stock": 20,
+    "description": "Altavoz Bluetooth resistente al agua (IP67) con 20h de autonomía y función de banco de energía para cargar dispositivos."
+  },
+  {
+    "id": "prod-elec-004",
+    "name": "Cargador Solar Anker PowerPort",
+    "category": "Electrónica",
+    "price": 49.99,
+    "rating": 4.3,
+    "stock": 35,
+    "description": "Panel solar plegable de 21W con 2 puertos USB-A. Ideal para senderismo y viajes. Eficiencia del 23% en conversión solar."
+  },
+  {
+    "id": "prod-elec-005",
+    "name": "Pulsera Actividad Xiaomi Band 8",
+    "category": "Electrónica",
+    "price": 39.99,
+    "rating": 4.4,
+    "stock": 50,
+    "description": "Pulsera de actividad con pantalla AMOLED de 1.62\", monitorización 24/7 de frecuencia cardíaca, SpO2 y más de 150 modos deportivos."
+  },
+  {
+    "id": "prod-ropa-001",
+    "name": "Sudadera Unisex Patagonia Better Sweater",
+    "category": "Ropa",
+    "price": 119.00,
+    "rating": 4.8,
+    "stock": 15,
+    "description": "Sudadera de forro polar en tejido reciclado con cremallera completa. Calor excepcional, tacto suave y fabricación sostenible."
+  },
+  {
+    "id": "prod-ropa-002",
+    "name": "Zapatillas Trail Salomon Speedcross 6",
+    "category": "Ropa",
+    "price": 134.99,
+    "rating": 4.7,
+    "stock": 9,
+    "description": "Zapatillas de trail running con suela Contagrip para terrenos húmedos y fangosos. Ajuste preciso con sistema Quicklace."
+  },
+  {
+    "id": "prod-ropa-003",
+    "name": "Vaqueros Slim Fit Levi's 511",
+    "category": "Ropa",
+    "price": 79.99,
+    "rating": 4.5,
+    "stock": 22,
+    "description": "Vaqueros slim fit clásicos en denim elástico 99% algodón. Corte por debajo de la cintura con pierna estrecha desde muslo a tobillo."
+  },
+  {
+    "id": "prod-ropa-004",
+    "name": "Camiseta Técnica Columbia Zero Rules",
+    "category": "Ropa",
+    "price": 34.99,
+    "rating": 4.2,
+    "stock": 40,
+    "description": "Camiseta de manga corta con tecnología Omni-Wick para evacuar la humedad y Omni-Shade UPF 30 para protección solar."
+  },
+  {
+    "id": "prod-ropa-005",
+    "name": "Chaqueta Cortavientos The North Face Venture 2",
+    "category": "Ropa",
+    "price": 99.99,
+    "rating": 4.6,
+    "stock": 7,
+    "description": "Chaqueta impermeable con costura sellada y membrana DryVent. Empaquetable en su propio bolsillo. Ideal para lluvia y viento."
+  },
+  {
+    "id": "prod-hogar-001",
+    "name": "Lámpara Escritorio BenQ ScreenBar Halo",
+    "category": "Hogar",
+    "price": 179.00,
+    "rating": 4.8,
+    "stock": 6,
+    "description": "Lámpara LED de monitor con luz trasera anti-deslumbramiento. Control táctil, temperatura de color ajustable y carga Qi inalámbrica en la base."
+  },
+  {
+    "id": "prod-hogar-002",
+    "name": "Cafetera de Goteo Philips Grind & Brew",
+    "category": "Hogar",
+    "price": 149.99,
+    "rating": 4.5,
+    "stock": 11,
+    "description": "Cafetera con molinillo integrado de muelas de acero. Programa el café por la noche y despierta con café recién molido y preparado."
+  },
+  {
+    "id": "prod-hogar-003",
+    "name": "Set Cuchillos Damasco Miyabi 5000MCD",
+    "category": "Hogar",
+    "price": 229.00,
+    "rating": 4.9,
+    "stock": 3,
+    "description": "Set de 3 cuchillos japoneses con hoja de acero damasco 63 capas y núcleo MicroCarbide. Mango de madera de abedul. Afilado excepcional."
+  },
+  {
+    "id": "prod-hogar-004",
+    "name": "Humidificador Ultrasónico Levoit Classic 300S",
+    "category": "Hogar",
+    "price": 59.99,
+    "rating": 4.6,
+    "stock": 18,
+    "description": "Humidificador ultrasónico de 6L con control por voz (Alexa/Google) y app. Niebla fría y caliente, modo nocturno silencioso."
+  },
+  {
+    "id": "prod-hogar-005",
+    "name": "Organizador Escritorio Bambú Lifewit",
+    "category": "Hogar",
+    "price": 34.99,
+    "rating": 4.3,
+    "stock": 25,
+    "description": "Set de organización de escritorio en bambú natural con 5 compartimentos. Porta-bolígrafos, bandeja de documentos y cajonera pequeña."
+  },
+  {
+    "id": "prod-dep-001",
+    "name": "Esterilla Yoga Manduka PRO",
+    "category": "Deportes",
+    "price": 109.00,
+    "rating": 4.8,
+    "stock": 14,
+    "description": "Esterilla de yoga profesional de 6mm con agarre superior en ambas caras. Caucho natural reciclado, dimensiones XL 71x24 pulgadas."
+  },
+  {
+    "id": "prod-dep-002",
+    "name": "Botella Térmica Hydro Flask 32oz",
+    "category": "Deportes",
+    "price": 54.99,
+    "rating": 4.7,
+    "stock": 30,
+    "description": "Botella de acero inoxidable 18/8 con tecnología TempShield de doble pared. Mantiene frío 24h y calor 12h. Boca ancha, libre de BPA."
+  },
+  {
+    "id": "prod-dep-003",
+    "name": "Mancuernas Ajustables Bowflex SelectTech 552",
+    "category": "Deportes",
+    "price": 349.00,
+    "rating": 4.7,
+    "stock": 4,
+    "description": "Set de mancuernas ajustables de 2,3 a 23,8 kg por pieza. Sustituyen 15 pares de pesas. Sistema de selección de peso con dial."
+  },
+  {
+    "id": "prod-dep-004",
+    "name": "Mochila Senderismo Osprey Stratos 36",
+    "category": "Deportes",
+    "price": 179.99,
+    "rating": 4.8,
+    "stock": 8,
+    "description": "Mochila técnica de 36L con sistema de suspensión Anti-Gravity, espalda ventilada y funda impermeable incluida. Ideal para excursiones de un día."
+  },
+  {
+    "id": "prod-dep-005",
+    "name": "Gafas Natación Speedo Fastskin Elite",
+    "category": "Deportes",
+    "price": 44.99,
+    "rating": 4.4,
+    "stock": 20,
+    "description": "Gafas de competición con lentes de policarbonato anti-UV y anti-vaho. Sello de silicona hidrodinámico y puente nasal intercambiable."
+  },
+  {
+    "id": "prod-lib-001",
+    "name": "Dune - Frank Herbert",
+    "category": "Libros",
+    "price": 18.99,
+    "rating": 4.9,
+    "stock": 45,
+    "description": "La obra cumbre de la ciencia ficción. Una épica interplanetaria sobre política, religión, ecología y destino en el planeta desértico Arrakis."
+  },
+  {
+    "id": "prod-lib-002",
+    "name": "JavaScript: The Good Parts - Douglas Crockford",
+    "category": "Libros",
+    "price": 29.99,
+    "rating": 4.5,
+    "stock": 20,
+    "description": "El manual definitivo para dominar las partes esenciales y elegantes de JavaScript. Imprescindible para cualquier desarrollador web."
+  },
+  {
+    "id": "prod-lib-003",
+    "name": "Cocina Sana Mediterránea - Yotam Ottolenghi",
+    "category": "Libros",
+    "price": 34.99,
+    "rating": 4.7,
+    "stock": 15,
+    "description": "Más de 120 recetas de cocina mediterránea y Oriente Próximo. Ingredientes frescos, sabores intensos y fotografía de alta calidad."
+  },
+  {
+    "id": "prod-lib-004",
+    "name": "Hábitos Atómicos - James Clear",
+    "category": "Libros",
+    "price": 19.99,
+    "rating": 4.8,
+    "stock": 60,
+    "description": "El sistema probado para construir buenos hábitos y eliminar los malos. Más de 10 millones de copias vendidas en todo el mundo."
+  },
+  {
+    "id": "prod-lib-005",
+    "name": "El Nombre de la Rosa - Umberto Eco",
+    "category": "Libros",
+    "price": 16.99,
+    "rating": 4.6,
+    "stock": 30,
+    "description": "Novela histórica y de misterio ambientada en una abadía medieval italiana. Una investigación criminal envuelta en erudición y simbolismo."
+  }
+]

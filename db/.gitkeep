@@ -1,0 +1,3 @@
+# Este directorio contiene la base de datos JSON de pedidos.
+# Los archivos .json y .db están excluidos del repositorio por .gitignore.
+# Este archivo .gitkeep mantiene el directorio en el repositorio.
