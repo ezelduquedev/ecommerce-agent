@@ -15,6 +15,7 @@ const { SYSTEM_PROMPT } = require('./prompts');
 
 // ─── Placeholders de herramientas e integraciones reales ─────────────────────
 const recommender = require('../modules/recommender');
+const cartModule = require('../modules/cart');
 
 function executeTool(name, args) {
   console.log(`\n  🔧 [TOOL CALL] ${name}(${JSON.stringify(args)})\n`);
@@ -47,16 +48,16 @@ function executeTool(name, args) {
     }
 
     case 'add_to_cart':
-      return JSON.stringify({ success: true, message: `Producto ${args.productId} añadido al carrito (x${args.quantity}).` });
+      return JSON.stringify(cartModule.add_to_cart(args.productId, args.quantity));
 
     case 'remove_from_cart':
-      return JSON.stringify({ success: true, message: `Producto ${args.productId} eliminado del carrito.` });
+      return JSON.stringify(cartModule.remove_from_cart(args.productId));
 
     case 'view_cart':
-      return JSON.stringify({ items: [], total: 0, message: 'El carrito está vacío. [MOCK - Día 2 implementará persistencia real]' });
+      return JSON.stringify(cartModule.view_cart());
 
     case 'clear_cart':
-      return JSON.stringify({ success: true, message: 'Carrito vaciado correctamente.' });
+      return JSON.stringify(cartModule.clear_cart());
 
     case 'create_order':
       return JSON.stringify({ orderId: `ORD-${Date.now()}`, status: 'pendiente', message: 'Pedido creado correctamente. [MOCK]' });
