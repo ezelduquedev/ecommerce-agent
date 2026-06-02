@@ -13,34 +13,37 @@ const Groq = require('groq-sdk');
 const { tools } = require('./tools');
 const { SYSTEM_PROMPT } = require('./prompts');
 
-// ─── Placeholders de herramientas (Día 1: mocks básicos) ─────────────────────
-// En el Día 2 estas funciones serán reemplazadas por implementaciones reales.
-const catalog = require('../data/catalog.json');
+// ─── Placeholders de herramientas e integraciones reales ─────────────────────
+const recommender = require('../modules/recommender');
 
 function executeTool(name, args) {
   console.log(`\n  🔧 [TOOL CALL] ${name}(${JSON.stringify(args)})\n`);
 
   switch (name) {
     case 'search_products': {
-      let results = catalog;
-      if (args.category) results = results.filter(p => p.category === args.category);
-      if (args.maxPrice !== undefined) results = results.filter(p => p.price <= args.maxPrice);
-      if (args.minRating !== undefined) results = results.filter(p => p.rating >= args.minRating);
-      return JSON.stringify(results.slice(0, 5));
+      const result = recommender.search_products({
+        query: args.query,
+        category: args.category,
+        minPrice: args.minPrice,
+        maxPrice: args.maxPrice,
+        minRating: args.minRating,
+        limit: args.limit || 5 // Límite por defecto para no saturar el contexto del LLM
+      });
+      return JSON.stringify(result);
     }
 
     case 'get_product_details': {
-      const product = catalog.find(p => p.id === args.productId);
+      const product = recommender.get_product_details(args.productId);
       return product ? JSON.stringify(product) : JSON.stringify({ error: 'Producto no encontrado.' });
     }
 
     case 'get_top_products': {
-      const n = args.n || 5;
-      let sorted = [...catalog];
-      if (args.sortBy === 'price_asc') sorted.sort((a, b) => a.price - b.price);
-      else if (args.sortBy === 'price_desc') sorted.sort((a, b) => b.price - a.price);
-      else sorted.sort((a, b) => b.rating - a.rating);
-      return JSON.stringify(sorted.slice(0, n));
+      const result = recommender.get_top_products({
+        category: args.category,
+        limit: args.n || 5,
+        sortBy: args.sortBy || 'rating'
+      });
+      return JSON.stringify(result);
     }
 
     case 'add_to_cart':

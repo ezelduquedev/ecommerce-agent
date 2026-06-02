@@ -13,14 +13,22 @@ const tools = [
     function: {
       name: 'search_products',
       description:
-        'Busca productos en el catálogo aplicando filtros opcionales. Úsala cuando el usuario pida buscar, ver o encontrar productos por categoría, precio o valoración.',
+        'Busca productos en el catálogo aplicando filtros opcionales. Úsala cuando el usuario pida buscar, ver o encontrar productos por texto, categoría, precio o valoración.',
       parameters: {
         type: 'object',
         properties: {
+          query: {
+            type: 'string',
+            description: 'Texto libre para buscar en el nombre, descripción o categoría del producto (ej: "auriculares", "sudadera", "Salomon").',
+          },
           category: {
             type: 'string',
             enum: ['Electrónica', 'Ropa', 'Hogar', 'Deportes', 'Libros'],
             description: 'Categoría de producto por la que filtrar.',
+          },
+          minPrice: {
+            type: 'number',
+            description: 'Precio mínimo en euros (EUR). Incluye productos con precio >= minPrice.',
           },
           maxPrice: {
             type: 'number',
@@ -64,6 +72,11 @@ const tools = [
       parameters: {
         type: 'object',
         properties: {
+          category: {
+            type: 'string',
+            enum: ['Electrónica', 'Ropa', 'Hogar', 'Deportes', 'Libros'],
+            description: 'Filtrar por categoría (opcional).',
+          },
           n: {
             type: 'integer',
             description: 'Número de productos a devolver. Por defecto 5.',
