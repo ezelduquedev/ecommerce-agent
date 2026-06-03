@@ -16,8 +16,9 @@ const { SYSTEM_PROMPT } = require('./prompts');
 // ─── Placeholders de herramientas e integraciones reales ─────────────────────
 const recommender = require('../modules/recommender');
 const cartModule = require('../modules/cart');
+const ordersModule = require('../modules/orders');
 
-function executeTool(name, args) {
+async function executeTool(name, args) {
   console.log(`\n  🔧 [TOOL CALL] ${name}(${JSON.stringify(args)})\n`);
 
   switch (name) {
@@ -59,17 +60,28 @@ function executeTool(name, args) {
     case 'clear_cart':
       return JSON.stringify(cartModule.clear_cart());
 
-    case 'create_order':
-      return JSON.stringify({ orderId: `ORD-${Date.now()}`, status: 'pendiente', message: 'Pedido creado correctamente. [MOCK]' });
+    case 'create_order': {
+      const result = await ordersModule.create_order(args.cartItems);
+      if (result.success) {
+        cartModule.clear_cart(); // Vaciar carrito automáticamente tras pedido exitoso
+      }
+      return JSON.stringify(result);
+    }
 
-    case 'get_order_status':
-      return JSON.stringify({ orderId: args.orderId, status: 'pendiente', message: 'Estado del pedido obtenido. [MOCK]' });
+    case 'get_order_status': {
+      const result = await ordersModule.get_order_status(args.orderId);
+      return JSON.stringify(result);
+    }
 
-    case 'cancel_order':
-      return JSON.stringify({ success: true, message: `Pedido ${args.orderId} cancelado. [MOCK]` });
+    case 'cancel_order': {
+      const result = await ordersModule.cancel_order(args.orderId);
+      return JSON.stringify(result);
+    }
 
-    case 'list_orders':
-      return JSON.stringify({ orders: [], message: 'No hay pedidos en esta sesión. [MOCK]' });
+    case 'list_orders': {
+      const result = await ordersModule.list_orders();
+      return JSON.stringify(result);
+    }
 
     default:
       return JSON.stringify({ error: `Herramienta desconocida: ${name}` });
@@ -107,7 +119,7 @@ async function callGroq(messages) {
     for (const toolCall of message.tool_calls) {
       const toolName = toolCall.function.name;
       const toolArgs = JSON.parse(toolCall.function.arguments || '{}');
-      const toolResult = executeTool(toolName, toolArgs);
+      const toolResult = await executeTool(toolName, toolArgs);
 
       messages.push({
         role: 'tool',
