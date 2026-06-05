@@ -5,6 +5,7 @@
 [![Tests](https://img.shields.io/badge/tests-40%20passed-brightgreen)](#-tests)
 [![Node](https://img.shields.io/badge/node-%3E%3D20-blue)](https://nodejs.org)
 [![Groq](https://img.shields.io/badge/LLM-llama--3.3--70b-purple)](https://console.groq.com)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/ezelduquedev/ecommerce-agent)
 
 ---
 
@@ -91,6 +92,14 @@ GROQ_API_KEY=gsk_tu_clave_aqui
 ```bash
 npm run test:groq
 ```
+
+### 4. Despliegue en la nube (Render)
+
+Puedes desplegar esta aplicación en producción en Render de forma gratuita y automática:
+
+* **Despliegue con un Clic**: Haz clic en el botón de **Deploy to Render** al inicio de esta documentación.
+* **Flujo Automatizado**: Render detectará el archivo de blueprint `render.yaml`, que configura el entorno de Node.js, las dependencias y el inicio del servidor (`npm run server`).
+* **Parámetros**: Solo se te solicitará introducir tu `GROQ_API_KEY` en la sección de variables de entorno del despliegue.
 
 ---
 
