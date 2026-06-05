@@ -12,8 +12,10 @@
 
 - 🗣️ **Chat en lenguaje natural** — el agente decide qué herramienta usar de forma autónoma
 - 🔍 **Búsqueda inteligente** — filtros por categoría, precio máximo, rating mínimo y palabras clave
-- 🛒 **Carrito en tiempo real** — añadir, eliminar y ver el carrito con totales automáticos
-- 📦 **Pedidos persistentes** — IDs tipo `ORD-YYYYMMDD-XXXX` guardados en `db/db.json` con `lowdb`
+- 🛒 **Carrito persistente en tiempo real** — carrito guardado automáticamente en `db/cart.json` para no perder la compra al reiniciar/recargar
+- 📦 **Gestión de pedidos** — persistidos en `db/db.json` con `lowdb` y panel de administración interactivo de estados (Pendiente, Enviado, Completado, Cancelado)
+- 🔌 **API REST Extendida** — endpoints para chat, productos, carrito y actualización de estados de pedidos
+- 🛡️ **Resiliencia & Fallback Local** — responde de manera inteligente con un motor local si el proveedor de IA (Groq) excede su cuota de tokens (errores 429) o está offline
 - 🌐 **Interfaz web** — UI dark mode premium accesible en `http://localhost:3000`
 - ✅ **40 tests unitarios** — cobertura al 100% con Jest
 
@@ -50,7 +52,8 @@ ecommerce-agent/
 ├── data/
 │   └── catalog.json    # 25 productos en 5 categorías
 ├── db/
-│   └── db.json         # Base de datos de pedidos (generada en runtime)
+│   ├── db.json         # Base de datos de pedidos (generada en runtime)
+│   └── cart.json       # Base de datos del carrito (generada en runtime para persistencia)
 ├── public/
 │   └── index.html      # Interfaz web de chat (Día 6)
 ├── tests/
@@ -153,6 +156,7 @@ El servidor Express expone los siguientes endpoints:
 | `DELETE` | `/api/cart` | Vaciar el carrito |
 | `GET` | `/api/orders` | Listar todos los pedidos |
 | `GET` | `/api/orders/:id` | Estado de un pedido específico |
+| `PATCH` | `/api/orders/:id/status` | Actualizar el estado de un pedido (ej: `{"status": "enviado"}`) |
 | `GET` | `/api/products` | Catálogo completo (query: `?category=&limit=`) |
 | `DELETE` | `/api/session` | Reiniciar sesión de chat |
 
@@ -228,7 +232,7 @@ El agente dispone de 11 herramientas que el LLM invoca de forma autónoma:
 | Día 4 | Módulo orders — persistencia lowdb, 10 tests | ✅ |
 | Día 5 | Integración completa, SYSTEM_PROMPT v2, fix lowdb sync | ✅ |
 | Día 6 | Servidor Express REST + Interfaz Web chat interactivo | ✅ |
-| Día 7 | README final, commit `v1.0.0`, entrega | ✅ |
+| Día 7 | Persistencia de carrito, administración de estados de pedidos, fallback resiliente offline y README final | ✅ |
 
 ---
 

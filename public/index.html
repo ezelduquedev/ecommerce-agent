@@ -534,6 +534,180 @@
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 5px; }
+
+    /* Catálogo interactivo de productos en chat */
+    .catalog-bubble {
+      max-width: 85% !important;
+      background: var(--bg-card) !important;
+    }
+    .catalog-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-bottom: 14px;
+      color: var(--text-primary);
+    }
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .product-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+      transition: var(--transition);
+    }
+    .product-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(108,99,255,0.15);
+    }
+    .product-emoji {
+      font-size: 1.8rem;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    .product-details {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .product-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .product-rating {
+      font-size: 0.72rem;
+      color: var(--warning);
+    }
+    .product-price {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-top: 2px;
+    }
+    .product-add-btn {
+      width: 100%;
+      padding: 6px 10px;
+      background: rgba(108,99,255,0.12);
+      border: 1px solid rgba(108,99,255,0.25);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+    .product-add-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .order-delete-btn:hover {
+      color: var(--danger) !important;
+      transform: scale(1.1);
+    }
+
+    /* ── Admin Panel ─────────────────────────────────────────── */
+    .admin-panel { padding: 16px; display: flex; flex-direction: column; gap: 14px; flex: 1; overflow-y: auto; }
+    .admin-section-title {
+      font-size: .72rem; font-weight: 700; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;
+    }
+    .admin-form { display: flex; flex-direction: column; gap: 10px; }
+    .admin-field { display: flex; flex-direction: column; gap: 4px; }
+    .admin-label { font-size: .75rem; color: var(--text-secondary); font-weight: 500; }
+    .admin-input, .admin-select, .admin-textarea {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: .82rem;
+      padding: 8px 10px;
+      transition: var(--transition);
+      width: 100%;
+    }
+    .admin-input:focus, .admin-select:focus, .admin-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+    .admin-textarea { resize: vertical; min-height: 58px; }
+    .admin-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .btn-admin-primary {
+      width: 100%; padding: 9px;
+      background: linear-gradient(135deg,#6c63ff,#7c4dff);
+      border: none; border-radius: var(--radius-sm);
+      color: #fff; font-size: .82rem; font-weight: 600;
+      font-family: inherit; cursor: pointer; transition: var(--transition);
+    }
+    .btn-admin-primary:hover { opacity:.9; box-shadow: var(--shadow-glow); }
+    .btn-admin-secondary {
+      width: 100%; padding: 8px;
+      background: transparent;
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      color: var(--text-muted); font-size: .8rem;
+      font-family: inherit; cursor: pointer; transition: var(--transition);
+    }
+    .btn-admin-secondary:hover { border-color: var(--accent); color: var(--accent); }
+    .admin-divider { border: none; border-top: 1px solid var(--border); margin: 4px 0; }
+    .admin-product-list { display: flex; flex-direction: column; gap: 6px; }
+    .admin-product-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      display: flex; align-items: center; gap: 8px;
+      transition: var(--transition);
+      animation: slideIn .2s ease;
+    }
+    .admin-product-item:hover { border-color: var(--border-light); }
+    .admin-product-item-info { flex: 1; min-width: 0; }
+    .admin-product-item-name {
+      font-size: .8rem; font-weight: 600;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .admin-product-item-meta { font-size: .72rem; color: var(--text-muted); margin-top: 2px; }
+    .admin-product-actions { display: flex; gap: 4px; flex-shrink: 0; }
+    .btn-icon-sm {
+      width: 28px; height: 28px;
+      border: 1px solid var(--border); border-radius: 6px;
+      background: transparent; color: var(--text-muted);
+      cursor: pointer; font-size: .85rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+    }
+    .btn-icon-sm:hover.edit { border-color: var(--accent); color: var(--accent); }
+    .btn-icon-sm:hover.del  { border-color: var(--danger); color: var(--danger); }
+    .admin-filter-row { display: flex; gap: 6px; }
+    .admin-filter-row .admin-input { flex: 1; }
+    .admin-search-input {
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text-primary);
+      font-family: inherit; font-size: .8rem; padding: 7px 10px;
+      width: 100%; transition: var(--transition);
+    }
+    .admin-search-input:focus { outline: none; border-color: var(--accent); }
+    .admin-mode-banner {
+      background: rgba(108,99,255,.1);
+      border: 1px solid rgba(108,99,255,.25);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-size: .75rem;
+      color: var(--accent);
+      display: flex; align-items: center; gap: 6px;
+    }
   </style>
 </head>
 <body>
@@ -591,7 +765,7 @@
       <div class="welcome-card" id="welcome-card">
         <div class="sparkle">✨</div>
         <h1>Hola, soy ShopBot</h1>
-        <p>Tu asistente de compras impulsado por IA. Búscame productos, gestiona tu carrito y realiza pedidos con lenguaje natural.</p>
+        <p>Tu asistente personal de compras. Dime qué buscas, gestiona tu carrito y realiza tus pedidos conversando de forma directa y sencilla.</p>
         <div class="suggestion-chips">
           <button class="chip" data-msg="Busco auriculares por menos de 100€">🎧 Auriculares &lt;100€</button>
           <button class="chip" data-msg="¿Qué libros me recomiendas?">📚 Libros recomendados</button>
@@ -627,6 +801,9 @@
       <button class="tab-btn" id="tab-orders-btn" role="tab" aria-selected="false" aria-controls="tab-orders">
         📦 Pedidos
       </button>
+      <button class="tab-btn" id="tab-admin-btn" role="tab" aria-selected="false" aria-controls="tab-admin">
+        ⚙️ Admin
+      </button>
     </div>
 
     <!-- Tab: Carrito -->
@@ -656,6 +833,71 @@
         <span>Sin pedidos todavía</span>
       </div>
       <div id="orders-list"></div>
+    </div>
+
+    <!-- Tab: Admin -->
+    <div class="tab-panel" id="tab-admin" role="tabpanel" aria-labelledby="tab-admin-btn">
+      <div class="admin-panel">
+
+        <div class="admin-mode-banner" id="admin-mode-banner">
+          🔐 Panel de administración · Solo uso interno
+        </div>
+
+        <!-- Formulario crear/editar -->
+        <div>
+          <p class="admin-section-title" id="admin-form-title">➕ Nuevo producto</p>
+          <form class="admin-form" id="admin-product-form" autocomplete="off">
+            <input type="hidden" id="admin-edit-id" value="" />
+            <div class="admin-field">
+              <label class="admin-label" for="admin-name">Nombre del producto *</label>
+              <input class="admin-input" id="admin-name" type="text" placeholder="Ej: Auriculares Sony WH-1000XM5" required />
+            </div>
+            <div class="admin-row">
+              <div class="admin-field">
+                <label class="admin-label" for="admin-category">Categoría *</label>
+                <select class="admin-select" id="admin-category" required>
+                  <option value="">-- Elegir --</option>
+                  <option value="Electrónica">📱 Electrónica</option>
+                  <option value="Ropa">👕 Ropa</option>
+                  <option value="Hogar">🏠 Hogar</option>
+                  <option value="Deportes">⚽ Deportes</option>
+                  <option value="Libros">📚 Libros</option>
+                </select>
+              </div>
+              <div class="admin-field">
+                <label class="admin-label" for="admin-price">Precio (€) *</label>
+                <input class="admin-input" id="admin-price" type="number" min="0" step="0.01" placeholder="29.99" required />
+              </div>
+            </div>
+            <div class="admin-row">
+              <div class="admin-field">
+                <label class="admin-label" for="admin-stock">Stock *</label>
+                <input class="admin-input" id="admin-stock" type="number" min="0" placeholder="50" required />
+              </div>
+              <div class="admin-field">
+                <label class="admin-label" for="admin-rating">Valoración (0-5)</label>
+                <input class="admin-input" id="admin-rating" type="number" min="0" max="5" step="0.1" placeholder="4.5" />
+              </div>
+            </div>
+            <div class="admin-field">
+              <label class="admin-label" for="admin-desc">Descripción</label>
+              <textarea class="admin-textarea" id="admin-desc" placeholder="Breve descripción del producto…"></textarea>
+            </div>
+            <button type="submit" class="btn-admin-primary" id="admin-submit-btn">➕ Crear producto</button>
+            <button type="button" class="btn-admin-secondary" id="admin-cancel-btn" style="display:none">✕ Cancelar edición</button>
+          </form>
+        </div>
+
+        <hr class="admin-divider" />
+
+        <!-- Búsqueda y lista de productos -->
+        <div>
+          <p class="admin-section-title">📋 Catálogo (<span id="admin-count">0</span> productos)</p>
+          <input class="admin-search-input" id="admin-search" type="text" placeholder="🔍 Filtrar por nombre o categoría…" />
+          <div class="admin-product-list" id="admin-product-list" style="margin-top:10px"></div>
+        </div>
+
+      </div>
     </div>
 
   </aside>
@@ -707,6 +949,68 @@ const CATEGORY_EMOJI = {
   'Electrónica': '📱', 'Ropa': '👕', 'Hogar': '🏠', 'Deportes': '🏃', 'Libros': '📚'
 };
 
+function getProductEmoji(product) {
+  if (!product || !product.name) return '🏷️';
+  const name = product.name.toLowerCase();
+  
+  if (product.category === 'Ropa') {
+    if (name.includes('camisa') || name.includes('camiseta') || name.includes('polo')) return '👕';
+    if (name.includes('chaqueta') || name.includes('abrigo') || name.includes('cortavientos')) return '🧥';
+    if (name.includes('calcetines') || name.includes('calcetin')) return '🧦';
+    if (name.includes('pantalon') || name.includes('vaqueros') || name.includes('jeans')) return '👖';
+    if (name.includes('vestido')) return '👗';
+    if (name.includes('falda')) return '👗';
+    if (name.includes('bufanda')) return '🧣';
+    if (name.includes('gorro') || name.includes('gorra')) return '🧢';
+    if (name.includes('zapatos') || name.includes('calzado') || name.includes('botas') || name.includes('zapatillas') || name.includes('zapatilla')) return '👟';
+    return '👕';
+  }
+
+  if (product.category === 'Deportes') {
+    if (name.includes('mancuernas') || name.includes('pesa') || name.includes('fuerza')) return '🏋️';
+    if (name.includes('esterilla') || name.includes('yoga')) return '🧘';
+    if (name.includes('botella') || name.includes('termica') || name.includes('térmica')) return '🥤';
+    if (name.includes('gafas') || name.includes('natación') || name.includes('natacion')) return '🥽';
+    if (name.includes('zapatillas') || name.includes('nike') || name.includes('calzado') || name.includes('running')) return '👟';
+    if (name.includes('balon') || name.includes('pelota')) return '⚽';
+    if (name.includes('cinta') || name.includes('correr')) return '🏃';
+    if (name.includes('bici') || name.includes('bicicleta')) return '🚴';
+    if (name.includes('mochila')) return '🎒';
+    return '🏃';
+  }
+
+  if (product.category === 'Electrónica') {
+    if (name.includes('auriculares') || name.includes('cascos') || name.includes('sonido')) return '🎧';
+    if (name.includes('altavoz') || name.includes('parlante') || name.includes('jbl')) return '🔊';
+    if (name.includes('reloj') || name.includes('smartwatch') || name.includes('fitbit')) return '⌚';
+    if (name.includes('teclado')) return '⌨️';
+    if (name.includes('raton') || name.includes('mouse')) return '🖱️';
+    if (name.includes('movil') || name.includes('telefono') || name.includes('iphone')) return '📱';
+    if (name.includes('portatil') || name.includes('ordenador') || name.includes('laptop')) return '💻';
+    if (name.includes('consola') || name.includes('nintendo') || name.includes('playstation')) return '🎮';
+    return '📱';
+  }
+
+  if (product.category === 'Hogar') {
+    if (name.includes('cafetera') || name.includes('cafe')) return '☕';
+    if (name.includes('aspiradora') || name.includes('limpieza')) return '🧹';
+    if (name.includes('lampara') || name.includes('lámpara') || name.includes('luz')) return '💡';
+    if (name.includes('cuchillo') || name.includes('cuchillos')) return '🔪';
+    if (name.includes('humidificador')) return '💨';
+    if (name.includes('organizador') || name.includes('escritorio')) return '📁';
+    if (name.includes('sartén') || name.includes('olla') || name.includes('cocina')) return '🍳';
+    if (name.includes('almohada') || name.includes('colchón') || name.includes('cama')) return '🛏️';
+    if (name.includes('taza')) return '🥛';
+    return '🏠';
+  }
+
+  if (product.category === 'Libros') {
+    return '📚';
+  }
+
+  return CATEGORY_EMOJI[product.category] || '🏷️';
+}
+
 function renderCart(cart) {
   cartItems.innerHTML = '';
   const items = cart.items || [];
@@ -728,7 +1032,7 @@ function renderCart(cart) {
   items.forEach(item => {
     const div = document.createElement('div');
     div.className = 'cart-item';
-    const emoji = CATEGORY_EMOJI[item.category] || '🏷️';
+    const emoji = getProductEmoji(item);
     div.innerHTML = `
       <div class="cart-item-emoji">${emoji}</div>
       <div class="cart-item-info">
@@ -752,15 +1056,58 @@ function renderOrders(orders) {
   }
   ordersEmpty.style.display = 'none';
 
+  // Botón para limpiar todo el historial si hay pedidos
+  const clearHeader = document.createElement('div');
+  clearHeader.style.padding = '8px 12px';
+  clearHeader.style.display = 'flex';
+  clearHeader.style.justifyContent = 'flex-end';
+  clearHeader.innerHTML = `
+    <button class="btn-ghost" id="btn-clear-orders" style="border-color: rgba(239,68,68,.3); color: var(--danger); font-size: 0.75rem; width: 100%;">
+      🗑️ Limpiar todo el historial
+    </button>
+  `;
+  ordersList.appendChild(clearHeader);
+
+  // Registrar event listener del botón general de limpiar historial
+  clearHeader.querySelector('#btn-clear-orders').addEventListener('click', async () => {
+    if (!confirm('¿Seguro que quieres vaciar todo el historial de pedidos?')) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/orders`, { method: 'DELETE' });
+      if (res.ok) {
+        showToast('🗑️ Historial de pedidos borrado');
+        await refreshOrders();
+      } else {
+        showToast('❌ No se pudo borrar el historial');
+      }
+    } catch {
+      showToast('❌ Error al conectar con el servidor');
+    }
+  });
+
   [...orders].reverse().forEach(order => {
     const div = document.createElement('div');
     div.className = 'order-card';
+    div.style.position = 'relative';
     const date = new Date(order.date).toLocaleString('es-ES', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' });
+    const nextStatus = { pendiente: 'enviado', enviado: 'completado' }[order.status];
+    const canAdvance = !!nextStatus;
+    const canCancel  = order.status === 'pendiente';
     div.innerHTML = `
+      <button class="order-delete-btn" title="Eliminar pedido" onclick="deleteSingleOrder('${order.id}')" style="position: absolute; top: 12px; right: 12px; background: transparent; border: none; color: var(--text-muted); cursor: pointer; transition: var(--transition); font-size: 0.9rem;">
+        🗑️
+      </button>
       <div class="order-id">${order.id}</div>
       <span class="order-status-pill ${order.status}">${statusLabel(order.status)}</span>
       <div class="order-total">${order.total.toFixed(2)}€</div>
       <div class="order-date">${date}</div>
+      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;">
+        ${canAdvance ? `<button onclick="advanceOrderStatus('${order.id}','${nextStatus}')" style="flex:1;padding:5px 8px;background:rgba(108,99,255,.12);border:1px solid rgba(108,99,255,.3);border-radius:6px;color:var(--accent);font-size:.72rem;font-family:inherit;cursor:pointer;transition:var(--transition);" onmouseover="this.style.background='var(--accent)';this.style.color='#fff'" onmouseout="this.style.background='rgba(108,99,255,.12)';this.style.color='var(--accent)'">
+            ${nextStatus === 'enviado' ? '🚚 Marcar enviado' : '✅ Marcar completado'}
+          </button>` : ''}
+        ${canCancel ? `<button onclick="advanceOrderStatus('${order.id}','cancelado')" style="padding:5px 8px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:6px;color:var(--danger);font-size:.72rem;font-family:inherit;cursor:pointer;transition:var(--transition);" onmouseover="this.style.background='var(--danger)';this.style.color='#fff'" onmouseout="this.style.background='rgba(239,68,68,.08)';this.style.color='var(--danger)'">
+            ❌ Cancelar
+          </button>` : ''}
+      </div>
     `;
     ordersList.appendChild(div);
   });
@@ -768,6 +1115,62 @@ function renderOrders(orders) {
 
 function statusLabel(s) {
   return { pendiente:'⏳ Pendiente', enviado:'🚚 Enviado', completado:'✅ Completado', cancelado:'❌ Cancelado' }[s] || s;
+}
+
+async function deleteSingleOrder(orderId) {
+  if (!confirm(`¿Seguro que quieres eliminar el pedido ${orderId}?`)) return;
+  try {
+    const res = await fetch(`${API_BASE}/api/orders/${orderId}`, { method: 'DELETE' });
+    if (res.ok) {
+      showToast(`🗑️ Pedido ${orderId} eliminado`);
+      await refreshOrders();
+    } else {
+      showToast('❌ No se pudo eliminar el pedido');
+    }
+  } catch {
+    showToast('❌ Error al conectar con el servidor');
+  }
+}
+
+async function advanceOrderStatus(orderId, newStatus) {
+  const labels = { enviado: 'enviado', completado: 'completado', cancelado: 'cancelado' };
+  const label = labels[newStatus] || newStatus;
+  if (!confirm(`¿Cambiar el pedido ${orderId} a estado "${label}"?`)) return;
+  try {
+    const res = await fetch(`${API_BASE}/api/orders/${orderId}/status`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStatus })
+    });
+    if (res.ok) {
+      showToast(`✅ Pedido ${orderId} → ${statusLabel(newStatus)}`);
+      await refreshOrders();
+    } else {
+      const err = await res.json();
+      showToast('❌ ' + (err.error || 'No se pudo cambiar el estado'));
+    }
+  } catch {
+    showToast('❌ Error de conexión');
+  }
+}
+
+async function directAddToCart(productId, name) {
+  try {
+    const res = await fetch(`${API_BASE}/api/cart/add`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ productId, quantity: 1 })
+    });
+    if (res.ok) {
+      const updatedCart = await res.json();
+      renderCart(updatedCart);
+      showToast(`🛒 ${name} añadido al carrito`);
+    } else {
+      showToast('⚠️ No se pudo añadir el producto');
+    }
+  } catch {
+    showToast('❌ Error al conectar con el carrito');
+  }
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -805,8 +1208,10 @@ function appendMessage(role, text) {
 
   const bubble = document.createElement('div');
   bubble.className = 'msg-bubble';
-  // Soportar saltos de línea del bot
-  bubble.innerHTML = text.replace(/\n/g, '<br>');
+  // Formatear markdown básico (**negrita** y *cursiva*) y saltos de línea
+  let html = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  bubble.innerHTML = html.replace(/\n/g, '<br>');
 
   row.appendChild(avatar);
   row.appendChild(bubble);
@@ -863,15 +1268,57 @@ async function sendMessage(text) {
       const err = await res.json();
       appendMessage('bot', `❌ ${err.error || 'Error del servidor.'}`);
       showToast('⚠️ Error al conectar con el agente', 4000);
+      isLoading = false;
+      sendBtn.disabled = false;
+      chatInput.focus();
       return;
     }
 
-    const data = await res.json();
-    appendMessage('bot', data.reply || '…');
+    // Procesar la respuesta SSE en streaming
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let botBubble = null;
+    let botText = '';
 
-    // Actualizar UI en base a la respuesta
-    if (data.cart) renderCart(data.cart);
-    await refreshOrders();
+    // Crear la burbuja del bot vacía para ir actualizándola con los chunks
+    botBubble = appendMessage('bot', '');
+    const bubbleContent = botBubble.querySelector('.msg-bubble');
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      
+      // Conservar la última línea incompleta en el buffer
+      buffer = lines.pop();
+
+      for (const line of lines) {
+        const cleaned = line.trim();
+        if (!cleaned.startsWith('data: ')) continue;
+        
+        try {
+          const parsed = JSON.parse(cleaned.slice(6));
+          if (parsed.type === 'chunk') {
+            botText += parsed.text;
+            let html = botText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            bubbleContent.innerHTML = html.replace(/\n/g, '<br>');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          } else if (parsed.type === 'done') {
+            if (parsed.cart) renderCart(parsed.cart);
+            await refreshOrders();
+          } else if (parsed.type === 'error') {
+            bubbleContent.innerHTML = `❌ ${parsed.error}`;
+            showToast('⚠️ Error en la respuesta', 4000);
+          }
+        } catch (e) {
+          console.error('Error parseando chunk:', e);
+        }
+      }
+    }
 
   } catch (err) {
     removeTyping();
@@ -904,12 +1351,95 @@ chatInput.addEventListener('input', () => {
 
 sendBtn.addEventListener('click', () => sendMessage(chatInput.value));
 
+async function showCategoryProducts(categoryName, categoryLabel) {
+  if (isLoading) return;
+  isLoading = true;
+  sendBtn.disabled = true;
+
+  // Quitar welcome card si está
+  if (welcomeCard && welcomeCard.parentNode) welcomeCard.remove();
+
+  // Mostrar mensaje de exploración del usuario
+  appendMessage('user', `Explorar categoría: ${categoryLabel}`);
+  showTyping();
+
+  try {
+    let url = `${API_BASE}/api/products`;
+    if (categoryName && categoryName !== 'all') {
+      url += `?category=${encodeURIComponent(categoryName)}`;
+    }
+    const r = await fetch(url);
+    const products = await r.json();
+
+    removeTyping();
+
+    if (!r.ok || !Array.isArray(products)) {
+      appendMessage('bot', '❌ No se pudieron cargar los productos de esta categoría.');
+      return;
+    }
+
+    if (products.length === 0) {
+      appendMessage('bot', `Actualmente no hay productos en la categoría **${categoryLabel}**.`);
+      return;
+    }
+
+    // Añadir mensaje de bot especial para el catálogo
+    const row = document.createElement('div');
+    row.className = 'msg-row bot';
+    
+    const avatar = document.createElement('div');
+    avatar.className = 'msg-avatar';
+    avatar.textContent = '🤖';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble catalog-bubble';
+    
+    let html = `<div class="catalog-title">Aquí tienes los productos de <strong>${categoryLabel}</strong>:</div>`;
+    html += `<div class="catalog-grid">`;
+    
+    products.forEach(p => {
+      const emoji = getProductEmoji(p);
+      const ratingStars = '⭐'.repeat(Math.round(p.rating)) + '☆'.repeat(5 - Math.round(p.rating));
+      html += `
+        <div class="product-card">
+          <div class="product-emoji">${emoji}</div>
+          <div class="product-details">
+            <div class="product-name" title="${p.name}">${p.name}</div>
+            <div class="product-rating">${ratingStars} <span style="font-size:0.7rem;color:var(--text-muted)">(${p.rating})</span></div>
+            <div class="product-price">${p.price.toFixed(2)}€</div>
+          </div>
+          <button class="product-add-btn" onclick="directAddToCart('${p.id}', '${p.name.replace(/'/g, "\\'")}')">Añadir ➕</button>
+        </div>
+      `;
+    });
+    
+    html += `</div>`;
+    bubble.innerHTML = html;
+    
+    row.appendChild(avatar);
+    row.appendChild(bubble);
+    chatMessages.appendChild(row);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  } catch (err) {
+    removeTyping();
+    appendMessage('bot', '❌ Error al cargar el catálogo de productos.');
+  } finally {
+    isLoading = false;
+    sendBtn.disabled = false;
+    chatInput.focus();
+  }
+}
+
 // Categorías sidebar
 document.querySelectorAll('.cat-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    sendMessage(btn.dataset.msg);
+    // Navegación directa sin pasar por el chatbot
+    const cat = btn.dataset.cat;
+    const label = btn.textContent.trim().replace(/^[\u2100-\u2BFF\uE000-\uF8FF\uD83C-\uDBFF\uDC00-\uDFFF\s]+/, '');
+    showCategoryProducts(cat, label || cat);
   });
 });
 
@@ -924,27 +1454,59 @@ document.querySelectorAll('.chip').forEach(chip => {
 });
 
 // Tabs derecho
-document.getElementById('tab-cart-btn').addEventListener('click', () => {
-  document.getElementById('tab-cart-btn').classList.add('active');
-  document.getElementById('tab-orders-btn').classList.remove('active');
-  document.getElementById('tab-cart').classList.add('active');
-  document.getElementById('tab-orders').classList.remove('active');
-  document.getElementById('tab-cart-btn').setAttribute('aria-selected', 'true');
-  document.getElementById('tab-orders-btn').setAttribute('aria-selected', 'false');
-});
-document.getElementById('tab-orders-btn').addEventListener('click', () => {
-  document.getElementById('tab-orders-btn').classList.add('active');
-  document.getElementById('tab-cart-btn').classList.remove('active');
-  document.getElementById('tab-orders').classList.add('active');
-  document.getElementById('tab-cart').classList.remove('active');
-  document.getElementById('tab-orders-btn').setAttribute('aria-selected', 'true');
-  document.getElementById('tab-cart-btn').setAttribute('aria-selected', 'false');
-  refreshOrders();
-});
+function switchTab(activeTab) {
+  ['cart','orders','admin'].forEach(t => {
+    document.getElementById(`tab-${t}-btn`).classList.toggle('active', t === activeTab);
+    document.getElementById(`tab-${t}-btn`).setAttribute('aria-selected', t === activeTab);
+    document.getElementById(`tab-${t}`).classList.toggle('active', t === activeTab);
+  });
+  if (activeTab === 'orders') refreshOrders();
+  if (activeTab === 'admin') adminRefreshList();
+}
+document.getElementById('tab-cart-btn').addEventListener('click',   () => switchTab('cart'));
+document.getElementById('tab-orders-btn').addEventListener('click', () => switchTab('orders'));
+document.getElementById('tab-admin-btn').addEventListener('click',  () => switchTab('admin'));
 
 // Botón Confirmar Pedido
-document.getElementById('btn-checkout').addEventListener('click', () => {
-  sendMessage('Quiero confirmar y realizar el pedido con los artículos de mi carrito');
+document.getElementById('btn-checkout').addEventListener('click', async () => {
+  if (!confirm('¿Seguro que quieres confirmar y realizar el pedido con los artículos de tu carrito?')) return;
+  try {
+    const cartRes = await fetch(`${API_BASE}/api/cart`);
+    const cart = await cartRes.json();
+    if (!cart.items || cart.items.length === 0) {
+      showToast('⚠️ Tu carrito está vacío');
+      return;
+    }
+    
+    // Mapear al formato requerido por el endpoint
+    const cartItems = cart.items.map(item => ({
+      productId: item.productId,
+      quantity: item.quantity
+    }));
+
+    const res = await fetch(`${API_BASE}/api/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cartItems })
+    });
+    
+    if (res.ok) {
+      const data = await res.json();
+      showToast(`✅ Pedido ${data.orderId} realizado con éxito`);
+      
+      // Simular respuesta directa en el chat sin pasar por Groq (0 tokens)
+      appendMessage('bot', `✅ **¡Pedido confirmado!** Tu pedido con código **${data.orderId}** ha sido procesado de forma directa. Puedes hacerle seguimiento en la pestaña de Pedidos.`);
+      
+      // Limpiar y refrescar la UI
+      renderCart(data.cart);
+      await refreshOrders();
+    } else {
+      const err = await res.json();
+      showToast(`❌ Error: ${err.error || 'No se pudo realizar el pedido'}`);
+    }
+  } catch (e) {
+    showToast('❌ Error de conexión al crear el pedido');
+  }
 });
 
 // Botón Vaciar Carrito
@@ -967,6 +1529,145 @@ document.getElementById('btn-new-session').addEventListener('click', async () =>
   chatMessages.insertAdjacentHTML('beforeend', document.querySelector('body').innerHTML);
   location.reload();
 });
+
+// ═══════════════════════════════════════════════════════════
+// PANEL ADMIN
+// ═══════════════════════════════════════════════════════════
+let adminAllProducts = [];
+
+async function adminRefreshList() {
+  try {
+    const res = await fetch(`${API_BASE}/api/products`);
+    adminAllProducts = await res.json();
+    document.getElementById('admin-count').textContent = adminAllProducts.length;
+    adminRenderList(document.getElementById('admin-search').value.trim());
+  } catch(e) {
+    showToast('❌ Error al cargar el catálogo');
+  }
+}
+
+function adminRenderList(filter = '') {
+  const list = document.getElementById('admin-product-list');
+  const q = filter.toLowerCase();
+  const filtered = q
+    ? adminAllProducts.filter(p =>
+        p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)
+      )
+    : adminAllProducts;
+
+  if (filtered.length === 0) {
+    list.innerHTML = `<p style="color:var(--text-muted);font-size:.8rem;padding:8px 0;">No se encontraron productos.</p>`;
+    return;
+  }
+  list.innerHTML = filtered.map(p => `
+    <div class="admin-product-item" data-id="${p.id}">
+      <span style="font-size:1.3rem">${getProductEmoji(p)}</span>
+      <div class="admin-product-item-info">
+        <div class="admin-product-item-name">${p.name}</div>
+        <div class="admin-product-item-meta">${p.category} · ${p.price.toFixed(2)}€ · Stock: ${p.stock}</div>
+      </div>
+      <div class="admin-product-actions">
+        <button class="btn-icon-sm edit" title="Editar" onclick="adminEditProduct('${p.id}')">✏️</button>
+        <button class="btn-icon-sm del"  title="Eliminar" onclick="adminDeleteProduct('${p.id}')">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+document.getElementById('admin-search').addEventListener('input', e => {
+  adminRenderList(e.target.value.trim());
+});
+
+function adminResetForm() {
+  document.getElementById('admin-edit-id').value = '';
+  document.getElementById('admin-name').value = '';
+  document.getElementById('admin-category').value = '';
+  document.getElementById('admin-price').value = '';
+  document.getElementById('admin-stock').value = '';
+  document.getElementById('admin-rating').value = '';
+  document.getElementById('admin-desc').value = '';
+  document.getElementById('admin-form-title').textContent = '➕ Nuevo producto';
+  document.getElementById('admin-submit-btn').textContent = '➕ Crear producto';
+  document.getElementById('admin-cancel-btn').style.display = 'none';
+}
+
+function adminEditProduct(id) {
+  const p = adminAllProducts.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('admin-edit-id').value = p.id;
+  document.getElementById('admin-name').value = p.name;
+  document.getElementById('admin-category').value = p.category;
+  document.getElementById('admin-price').value = p.price;
+  document.getElementById('admin-stock').value = p.stock;
+  document.getElementById('admin-rating').value = p.rating || '';
+  document.getElementById('admin-desc').value = p.description || '';
+  document.getElementById('admin-form-title').textContent = '✏️ Editar producto';
+  document.getElementById('admin-submit-btn').textContent = '💾 Guardar cambios';
+  document.getElementById('admin-cancel-btn').style.display = 'block';
+  document.getElementById('tab-admin').querySelector('.admin-panel').scrollTop = 0;
+  document.getElementById('admin-name').focus();
+}
+
+async function adminDeleteProduct(id) {
+  const p = adminAllProducts.find(x => x.id === id);
+  if (!p) return;
+  if (!confirm(`¿Eliminar permanentemente "${p.name}"?`)) return;
+  try {
+    const res = await fetch(`${API_BASE}/api/products/${id}`, { method: 'DELETE' });
+    if (res.ok) {
+      showToast(`🗑️ "${p.name}" eliminado`);
+      await adminRefreshList();
+    } else {
+      const err = await res.json();
+      showToast('❌ ' + (err.error || 'No se pudo eliminar'));
+    }
+  } catch(e) {
+    showToast('❌ Error de conexión');
+  }
+}
+
+document.getElementById('admin-product-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const editId   = document.getElementById('admin-edit-id').value.trim();
+  const name     = document.getElementById('admin-name').value.trim();
+  const category = document.getElementById('admin-category').value;
+  const price    = parseFloat(document.getElementById('admin-price').value);
+  const stock    = parseInt(document.getElementById('admin-stock').value);
+  const rating   = document.getElementById('admin-rating').value ? parseFloat(document.getElementById('admin-rating').value) : undefined;
+  const description = document.getElementById('admin-desc').value.trim();
+
+  const body = { name, category, price, stock, description };
+  if (rating !== undefined) body.rating = rating;
+
+  try {
+    let res;
+    if (editId) {
+      res = await fetch(`${API_BASE}/api/products/${editId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+    } else {
+      res = await fetch(`${API_BASE}/api/products`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+    }
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast(editId ? `✅ Producto actualizado` : `✅ Producto "${data.product.name}" creado`);
+      adminResetForm();
+      await adminRefreshList();
+    } else {
+      showToast('❌ ' + (data.error || 'Error al guardar'));
+    }
+  } catch(e) {
+    showToast('❌ Error de conexión');
+  }
+});
+
+document.getElementById('admin-cancel-btn').addEventListener('click', adminResetForm);
 
 // ═══════════════════════════════════════════════════════════
 // INIT

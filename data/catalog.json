@@ -48,7 +48,7 @@
     "id": "prod-ropa-001",
     "name": "Sudadera Unisex Patagonia Better Sweater",
     "category": "Ropa",
-    "price": 119.00,
+    "price": 119,
     "rating": 4.8,
     "stock": 15,
     "description": "Sudadera de forro polar en tejido reciclado con cremallera completa. Calor excepcional, tacto suave y fabricación sostenible."
@@ -93,7 +93,7 @@
     "id": "prod-hogar-001",
     "name": "Lámpara Escritorio BenQ ScreenBar Halo",
     "category": "Hogar",
-    "price": 179.00,
+    "price": 179,
     "rating": 4.8,
     "stock": 6,
     "description": "Lámpara LED de monitor con luz trasera anti-deslumbramiento. Control táctil, temperatura de color ajustable y carga Qi inalámbrica en la base."
@@ -111,7 +111,7 @@
     "id": "prod-hogar-003",
     "name": "Set Cuchillos Damasco Miyabi 5000MCD",
     "category": "Hogar",
-    "price": 229.00,
+    "price": 229,
     "rating": 4.9,
     "stock": 3,
     "description": "Set de 3 cuchillos japoneses con hoja de acero damasco 63 capas y núcleo MicroCarbide. Mango de madera de abedul. Afilado excepcional."
@@ -138,7 +138,7 @@
     "id": "prod-dep-001",
     "name": "Esterilla Yoga Manduka PRO",
     "category": "Deportes",
-    "price": 109.00,
+    "price": 109,
     "rating": 4.8,
     "stock": 14,
     "description": "Esterilla de yoga profesional de 6mm con agarre superior en ambas caras. Caucho natural reciclado, dimensiones XL 71x24 pulgadas."
@@ -156,7 +156,7 @@
     "id": "prod-dep-003",
     "name": "Mancuernas Ajustables Bowflex SelectTech 552",
     "category": "Deportes",
-    "price": 349.00,
+    "price": 349,
     "rating": 4.7,
     "stock": 4,
     "description": "Set de mancuernas ajustables de 2,3 a 23,8 kg por pieza. Sustituyen 15 pares de pesas. Sistema de selección de peso con dial."

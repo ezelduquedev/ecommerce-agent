@@ -16,7 +16,7 @@
 const { Low } = require('lowdb');
 const { JSONFile } = require('lowdb/node');
 const path = require('path');
-const catalog = require('../../data/catalog.json');
+const { getCatalog } = require('../catalog');
 
 let db = null;
 let currentDbPath = null;
@@ -117,6 +117,7 @@ async function create_order(cartItems) {
   let itemCount = 0;
 
   // 1. Validar productos y stock de catálogo de forma estricta
+  const catalog = getCatalog();
   for (const item of cartItems) {
     const product = catalog.find(p => p.id === item.productId);
     if (!product) {
@@ -274,10 +275,55 @@ async function list_orders() {
   };
 }
 
+/**
+ * Elimina un pedido específico por ID.
+ */
+async function delete_order(orderId) {
+  const database = await initDb();
+  await database.read();
+  const idx = database.data.orders.findIndex(o => o.id === orderId);
+  if (idx === -1) return { success: false, error: `Pedido "${orderId}" no encontrado.` };
+  database.data.orders.splice(idx, 1);
+  await database.write();
+  return { success: true };
+}
+
+/**
+ * Actualiza el estado de un pedido existente y persiste el cambio.
+ *
+ * @param {string} orderId - ID del pedido
+ * @param {string} newStatus - Nuevo estado ('pendiente' | 'enviado' | 'completado' | 'cancelado')
+ * @returns {Promise<Object>} Resultado con el pedido actualizado
+ */
+async function update_order_status(orderId, newStatus) {
+  const database = await initDb();
+  await database.read();
+  const order = database.data.orders.find(o => o.id === orderId);
+  if (!order) return { success: false, error: `Pedido "${orderId}" no encontrado.` };
+  order.status = newStatus;
+  await database.write();
+  return { success: true, order };
+}
+
+/**
+ * Elimina todos los pedidos (para demos limpias).
+ */
+async function clear_orders() {
+
+  const database = await initDb();
+  await database.read();
+  database.data.orders = [];
+  await database.write();
+  return { success: true, message: 'Historial de pedidos eliminado.' };
+}
+
 module.exports = {
   create_order,
   get_order_status,
   cancel_order,
   list_orders,
+  delete_order,
+  clear_orders,
+  update_order_status,
   setDatabasePath
 };

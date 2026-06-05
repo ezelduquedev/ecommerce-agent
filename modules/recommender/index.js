@@ -11,7 +11,7 @@
 
 'use strict';
 
-const catalog = require('../../data/catalog.json');
+const { getCatalog } = require('../catalog');
 
 // ─── Utilidades internas ───────────────────────────────────────────────────────
 
@@ -59,6 +59,7 @@ function matchesQuery(product, query) {
  */
 function search_products(params = {}) {
   const { query, category, minPrice, maxPrice, minRating, limit = 10 } = params;
+  const catalog = getCatalog();
 
   let results = catalog.filter(product => {
     // Filtro por texto libre (nombre, descripción, categoría)
@@ -103,6 +104,7 @@ function search_products(params = {}) {
  */
 function get_product_details(productId) {
   if (!productId) return null;
+  const catalog = getCatalog();
   const product = catalog.find(p => p.id === productId.trim());
   return product || null;
 }
@@ -118,6 +120,7 @@ function get_product_details(productId) {
  */
 function get_top_products(params = {}) {
   const { category, limit = 5, sortBy = 'rating' } = params;
+  const catalog = getCatalog();
 
   let results = [...catalog];
 
