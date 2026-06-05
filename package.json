@@ -4,10 +4,10 @@
   "description": "Agente conversacional de e-commerce con Groq API",
   "scripts": {
     "test": "jest",
-    "start": "set NODE_TLS_REJECT_UNAUTHORIZED=0 && node agent/index.js",
-    "server": "set NODE_TLS_REJECT_UNAUTHORIZED=0 && node server.js",
+    "start": "node agent/index.js",
+    "server": "node server.js",
     "test:watch": "jest --watch",
-    "test:groq": "set NODE_TLS_REJECT_UNAUTHORIZED=0 && node test-groq.js"
+    "test:groq": "node test-groq.js"
   },
   "keywords": [],
   "author": "",
