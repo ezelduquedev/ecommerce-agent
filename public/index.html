@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ShopBot — Agente conversacional de e-commerce impulsado por IA. Busca productos, gestiona tu carrito y realiza pedidos con lenguaje natural." />
+  <title>ShopBot — E-commerce con IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset y tokens de diseño ───────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-base:      #0a0b0f;
+      --bg-surface:   #12141a;
+      --bg-card:      #1a1d26;
+      --bg-input:     #1e2130;
+      --border:       #2a2d3e;
+      --border-light: #373b52;
+
+      --accent:       #6c63ff;
+      --accent-hover: #7d76ff;
+      --accent-glow:  rgba(108,99,255,.25);
+      --success:      #22c55e;
+      --danger:       #ef4444;
+      --warning:      #f59e0b;
+
+      --text-primary:   #f0f2ff;
+      --text-secondary: #8b93b5;
+      --text-muted:     #555a72;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+
+      --shadow-card: 0 4px 24px rgba(0,0,0,.45);
+      --shadow-glow: 0 0 30px var(--accent-glow);
+
+      --transition: .2s cubic-bezier(.4,0,.2,1);
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      overflow: hidden;
+    }
+
+    /* ── Layout principal ────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 280px 1fr 300px;
+      grid-template-rows: 60px 1fr;
+      height: 100vh;
+      gap: 0;
+    }
+
+    /* ── Topbar ──────────────────────────────────────────────────── */
+    .topbar {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      background: rgba(18,20,26,.95);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      z-index: 10;
+    }
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: -.3px;
+    }
+    .topbar-brand .logo-icon {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg,#6c63ff,#9b5de5);
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .topbar-badge {
+      display: flex; align-items: center; gap: 6px;
+      font-size: .72rem; font-weight: 500;
+      color: var(--success);
+      background: rgba(34,197,94,.1);
+      border: 1px solid rgba(34,197,94,.2);
+      border-radius: 20px;
+      padding: 3px 10px;
+    }
+    .topbar-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:.5; transform:scale(1.3); }
+    }
+    .topbar-actions { display: flex; gap: 8px; }
+    .btn-ghost {
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: .78rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-ghost:hover { background: var(--bg-card); color: var(--text-primary); border-color: var(--border-light); }
+
+    /* ── Sidebar izquierdo — Categorías ──────────────────────────── */
+    .sidebar-left {
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .sidebar-title {
+      font-size: .68rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 4px 8px 10px;
+    }
+    .cat-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: .85rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: left;
+      width: 100%;
+    }
+    .cat-btn:hover, .cat-btn.active {
+      background: var(--bg-card);
+      color: var(--text-primary);
+    }
+    .cat-btn.active { color: var(--accent); }
+    .cat-icon { font-size: 1.1rem; width: 22px; text-align: center; }
+
+    .sidebar-divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+
+    .quick-actions-title {
+      font-size: .68rem; font-weight: 600;
+      color: var(--text-muted); text-transform: uppercase;
+      letter-spacing: 1px; padding: 4px 8px 8px;
+    }
+    .quick-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: .82rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition);
+      width: 100%;
+    }
+    .quick-btn:hover { background: var(--bg-card); border-color: var(--accent); color: var(--accent); }
+
+    /* ── Panel central — Chat ────────────────────────────────────── */
+    .chat-panel {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-base);
+      overflow: hidden;
+    }
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      scroll-behavior: smooth;
+    }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 4px; }
+
+    /* Bienvenida */
+    .welcome-card {
+      background: linear-gradient(135deg, rgba(108,99,255,.12), rgba(155,93,229,.06));
+      border: 1px solid rgba(108,99,255,.2);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      text-align: center;
+      margin: auto;
+      max-width: 480px;
+    }
+    .welcome-card h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+    .welcome-card p { color: var(--text-secondary); line-height: 1.6; font-size: .9rem; }
+    .welcome-card .sparkle { font-size: 2.5rem; margin-bottom: 12px; }
+    .suggestion-chips {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      justify-content: center; margin-top: 18px;
+    }
+    .chip {
+      padding: 7px 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: .78rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .chip:hover { border-color: var(--accent); color: var(--accent); background: rgba(108,99,255,.08); }
+
+    /* Burbujas de chat */
+    .msg-row {
+      display: flex;
+      gap: 12px;
+      animation: slideIn .25s ease;
+    }
+    @keyframes slideIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+    .msg-row.user { flex-direction: row-reverse; }
+
+    .msg-avatar {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .msg-row.bot .msg-avatar {
+      background: linear-gradient(135deg,#6c63ff,#9b5de5);
+    }
+    .msg-row.user .msg-avatar {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+    }
+
+    .msg-bubble {
+      max-width: 72%;
+      padding: 13px 17px;
+      border-radius: var(--radius-md);
+      font-size: .9rem;
+      line-height: 1.65;
+    }
+    .msg-row.bot .msg-bubble {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-top-left-radius: 4px;
+      color: var(--text-primary);
+    }
+    .msg-row.user .msg-bubble {
+      background: linear-gradient(135deg,#6c63ff,#7c4dff);
+      border-top-right-radius: 4px;
+      color: #fff;
+    }
+
+    /* Typing indicator */
+    .typing-indicator { display: flex; gap: 5px; align-items: center; padding: 14px 17px; }
+    .typing-dot {
+      width: 7px; height: 7px;
+      background: var(--text-muted);
+      border-radius: 50%;
+      animation: typing .9s infinite;
+    }
+    .typing-dot:nth-child(2) { animation-delay: .15s; }
+    .typing-dot:nth-child(3) { animation-delay: .3s; }
+    @keyframes typing { 0%,80%,100% { transform:scale(1); opacity:.4; } 40% { transform:scale(1.3); opacity:1; } }
+
+    /* Input area */
+    .chat-input-area {
+      padding: 16px 24px 20px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-surface);
+    }
+    .chat-input-wrap {
+      display: flex;
+      gap: 10px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 6px 6px 6px 18px;
+      transition: var(--transition);
+    }
+    .chat-input-wrap:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    #chat-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-primary);
+      font-size: .9rem;
+      font-family: inherit;
+      resize: none;
+      min-height: 24px;
+      max-height: 100px;
+      padding: 6px 0;
+      line-height: 1.5;
+    }
+    #chat-input::placeholder { color: var(--text-muted); }
+    #send-btn {
+      width: 40px; height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: linear-gradient(135deg,#6c63ff,#7c4dff);
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+    #send-btn:hover:not(:disabled) { transform: scale(1.08); box-shadow: var(--shadow-glow); }
+    #send-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+    /* ── Sidebar derecho — Carrito y pedidos ─────────────────────── */
+    .sidebar-right {
+      background: var(--bg-surface);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .sidebar-right-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 14px 8px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: .8rem;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition);
+      border-bottom: 2px solid transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-badge {
+      background: var(--accent);
+      color: #fff;
+      font-size: .65rem;
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 1px 6px;
+      min-width: 18px;
+      text-align: center;
+    }
+    .tab-panel { display: none; flex: 1; overflow-y: auto; flex-direction: column; }
+    .tab-panel.active { display: flex; }
+    .tab-panel::-webkit-scrollbar { width: 3px; }
+    .tab-panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* Carrito */
+    .cart-empty {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--text-muted);
+      font-size: .85rem;
+      padding: 24px;
+    }
+    .cart-empty .empty-icon { font-size: 2.8rem; }
+
+    .cart-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      animation: slideIn .2s ease;
+    }
+    .cart-item-emoji {
+      width: 38px; height: 38px;
+      background: var(--bg-card);
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .cart-item-info { flex: 1; min-width: 0; }
+    .cart-item-name {
+      font-size: .82rem;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cart-item-meta {
+      font-size: .75rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+    .cart-item-price {
+      font-size: .88rem;
+      font-weight: 600;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .cart-footer {
+      padding: 16px;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+      background: var(--bg-surface);
+    }
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: .9rem;
+    }
+    .cart-total-row .label { color: var(--text-muted); }
+    .cart-total-row .amount { font-weight: 700; font-size: 1.05rem; color: var(--text-primary); }
+    .btn-checkout {
+      width: 100%;
+      padding: 11px;
+      background: linear-gradient(135deg,#6c63ff,#7c4dff);
+      border: none;
+      border-radius: var(--radius-md);
+      color: #fff;
+      font-size: .88rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-checkout:hover { opacity: .9; box-shadow: var(--shadow-glow); }
+    .btn-checkout:disabled { opacity: .4; cursor: not-allowed; }
+    .btn-clear-cart {
+      width: 100%;
+      margin-top: 8px;
+      padding: 8px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-muted);
+      font-size: .8rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-clear-cart:hover { border-color: var(--danger); color: var(--danger); }
+
+    /* Pedidos */
+    .orders-empty {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--text-muted);
+      font-size: .85rem;
+      padding: 24px;
+    }
+    .order-card {
+      margin: 12px 12px 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      animation: slideIn .2s ease;
+    }
+    .order-card:last-child { margin-bottom: 12px; }
+    .order-id { font-size: .75rem; font-weight: 600; color: var(--accent); margin-bottom: 6px; }
+    .order-status-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: .7rem; font-weight: 600;
+      padding: 2px 9px; border-radius: 20px;
+    }
+    .order-status-pill.pendiente { background: rgba(245,158,11,.12); color: var(--warning); }
+    .order-status-pill.enviado   { background: rgba(108,99,255,.12); color: var(--accent); }
+    .order-status-pill.completado{ background: rgba(34,197,94,.12); color: var(--success); }
+    .order-status-pill.cancelado { background: rgba(239,68,68,.1); color: var(--danger); }
+    .order-total { font-size: .85rem; font-weight: 600; margin-top: 8px; }
+    .order-date { font-size: .72rem; color: var(--text-muted); margin-top: 3px; }
+
+    /* ── Toast ───────────────────────────────────────────────────── */
+    #toast {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 10px 20px;
+      font-size: .85rem;
+      color: var(--text-primary);
+      box-shadow: var(--shadow-card);
+      opacity: 0;
+      transition: all .35s cubic-bezier(.4,0,.2,1);
+      z-index: 9999;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── Scrollbar global ────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 5px; }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- Topbar -->
+  <header class="topbar" role="banner">
+    <div class="topbar-brand">
+      <div class="logo-icon">🛒</div>
+      <span>ShopBot</span>
+    </div>
+    <div class="topbar-badge" id="status-badge">Conectado · llama-3.3-70b</div>
+    <div class="topbar-actions">
+      <button class="btn-ghost" id="btn-new-session" title="Nueva sesión">↺ Nueva sesión</button>
+    </div>
+  </header>
+
+  <!-- Sidebar izquierdo -->
+  <aside class="sidebar-left" role="complementary" aria-label="Categorías y acciones rápidas">
+    <p class="sidebar-title">Explorar</p>
+    <button class="cat-btn active" id="cat-all" data-msg="Muéstrame los productos más populares de toda la tienda" data-cat="all">
+      <span class="cat-icon">✨</span> Todo el catálogo
+    </button>
+    <button class="cat-btn" data-msg="Busca los mejores productos de Electrónica" data-cat="Electrónica">
+      <span class="cat-icon">📱</span> Electrónica
+    </button>
+    <button class="cat-btn" data-msg="Busca los mejores productos de Ropa" data-cat="Ropa">
+      <span class="cat-icon">👕</span> Ropa
+    </button>
+    <button class="cat-btn" data-msg="Busca los mejores productos de Hogar" data-cat="Hogar">
+      <span class="cat-icon">🏠</span> Hogar
+    </button>
+    <button class="cat-btn" data-msg="Busca los mejores productos de Deportes" data-cat="Deportes">
+      <span class="cat-icon">🏃</span> Deportes
+    </button>
+    <button class="cat-btn" data-msg="Busca los mejores libros del catálogo" data-cat="Libros">
+      <span class="cat-icon">📚</span> Libros
+    </button>
+
+    <hr class="sidebar-divider" />
+
+    <p class="quick-actions-title">Acciones rápidas</p>
+    <button class="quick-btn" data-msg="¿Qué hay en mi carrito?">🛒 Ver mi carrito</button>
+    <button class="quick-btn" data-msg="Muéstrame mis pedidos">📦 Mis pedidos</button>
+    <button class="quick-btn" data-msg="¿Cuáles son los productos mejor valorados?">⭐ Mejor valorados</button>
+    <button class="quick-btn" data-msg="¿Qué productos tienen oferta o precio más bajo?">💶 Precio más bajo</button>
+  </aside>
+
+  <!-- Panel de chat -->
+  <main class="chat-panel" role="main" aria-label="Chat con ShopBot">
+    <div class="chat-messages" id="chat-messages" aria-live="polite" aria-label="Mensajes del chat">
+
+      <!-- Bienvenida -->
+      <div class="welcome-card" id="welcome-card">
+        <div class="sparkle">✨</div>
+        <h1>Hola, soy ShopBot</h1>
+        <p>Tu asistente de compras impulsado por IA. Búscame productos, gestiona tu carrito y realiza pedidos con lenguaje natural.</p>
+        <div class="suggestion-chips">
+          <button class="chip" data-msg="Busco auriculares por menos de 100€">🎧 Auriculares &lt;100€</button>
+          <button class="chip" data-msg="¿Qué libros me recomiendas?">📚 Libros recomendados</button>
+          <button class="chip" data-msg="Necesito equipamiento deportivo">🏃 Deportes</button>
+          <button class="chip" data-msg="Muéstrame productos de hogar bien valorados">🏠 Hogar ⭐⭐⭐⭐</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Input -->
+    <div class="chat-input-area">
+      <div class="chat-input-wrap">
+        <textarea
+          id="chat-input"
+          placeholder="Escribe tu mensaje… (Enter para enviar, Shift+Enter para nueva línea)"
+          rows="1"
+          aria-label="Mensaje al asistente"
+        ></textarea>
+        <button id="send-btn" aria-label="Enviar mensaje" title="Enviar">➤</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Sidebar derecho -->
+  <aside class="sidebar-right" role="complementary" aria-label="Carrito y pedidos">
+
+    <!-- Tabs -->
+    <div class="sidebar-right-tabs" role="tablist">
+      <button class="tab-btn active" id="tab-cart-btn" role="tab" aria-selected="true" aria-controls="tab-cart">
+        🛒 Carrito <span class="tab-badge" id="cart-count">0</span>
+      </button>
+      <button class="tab-btn" id="tab-orders-btn" role="tab" aria-selected="false" aria-controls="tab-orders">
+        📦 Pedidos
+      </button>
+    </div>
+
+    <!-- Tab: Carrito -->
+    <div class="tab-panel active" id="tab-cart" role="tabpanel" aria-labelledby="tab-cart-btn">
+      <div id="cart-content">
+        <div class="cart-empty" id="cart-empty">
+          <span class="empty-icon">🛒</span>
+          <span>Tu carrito está vacío</span>
+          <span style="font-size:.78rem;color:var(--text-muted)">Habla con ShopBot para añadir productos</span>
+        </div>
+        <div id="cart-items"></div>
+      </div>
+      <div class="cart-footer" id="cart-footer" style="display:none">
+        <div class="cart-total-row">
+          <span class="label">Total</span>
+          <span class="amount" id="cart-total">0.00€</span>
+        </div>
+        <button class="btn-checkout" id="btn-checkout">Confirmar pedido 🛒</button>
+        <button class="btn-clear-cart" id="btn-clear-cart">Vaciar carrito</button>
+      </div>
+    </div>
+
+    <!-- Tab: Pedidos -->
+    <div class="tab-panel" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-btn">
+      <div class="orders-empty" id="orders-empty">
+        <span style="font-size:2.5rem">📦</span>
+        <span>Sin pedidos todavía</span>
+      </div>
+      <div id="orders-list"></div>
+    </div>
+
+  </aside>
+
+</div>
+
+<!-- Toast de notificación -->
+<div id="toast" aria-live="assertive"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════════════════
+const API_BASE = '';
+const SESSION_ID = 'web-' + Math.random().toString(36).slice(2, 9);
+let isLoading = false;
+
+// ═══════════════════════════════════════════════════════════
+// ELEMENTOS DOM
+// ═══════════════════════════════════════════════════════════
+const chatMessages = document.getElementById('chat-messages');
+const chatInput    = document.getElementById('chat-input');
+const sendBtn      = document.getElementById('send-btn');
+const cartItems    = document.getElementById('cart-items');
+const cartEmpty    = document.getElementById('cart-empty');
+const cartFooter   = document.getElementById('cart-footer');
+const cartTotal    = document.getElementById('cart-total');
+const cartCount    = document.getElementById('cart-count');
+const ordersList   = document.getElementById('orders-list');
+const ordersEmpty  = document.getElementById('orders-empty');
+const toastEl      = document.getElementById('toast');
+const welcomeCard  = document.getElementById('welcome-card');
+
+// ═══════════════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════════════
+let toastTimer;
+function showToast(msg, duration = 3000) {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), duration);
+}
+
+// ═══════════════════════════════════════════════════════════
+// RENDERIZAR CARRITO
+// ═══════════════════════════════════════════════════════════
+const CATEGORY_EMOJI = {
+  'Electrónica': '📱', 'Ropa': '👕', 'Hogar': '🏠', 'Deportes': '🏃', 'Libros': '📚'
+};
+
+function renderCart(cart) {
+  cartItems.innerHTML = '';
+  const items = cart.items || [];
+  const total = cart.total || 0;
+  const count = items.length;
+
+  cartCount.textContent = count;
+
+  if (count === 0) {
+    cartEmpty.style.display = 'flex';
+    cartFooter.style.display = 'none';
+    return;
+  }
+
+  cartEmpty.style.display = 'none';
+  cartFooter.style.display = 'block';
+  cartTotal.textContent = total.toFixed(2) + '€';
+
+  items.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+    const emoji = CATEGORY_EMOJI[item.category] || '🏷️';
+    div.innerHTML = `
+      <div class="cart-item-emoji">${emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name" title="${item.name}">${item.name}</div>
+        <div class="cart-item-meta">×${item.quantity} · ${item.price.toFixed(2)}€ c/u</div>
+      </div>
+      <div class="cart-item-price">${(item.price * item.quantity).toFixed(2)}€</div>
+    `;
+    cartItems.appendChild(div);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// RENDERIZAR PEDIDOS
+// ═══════════════════════════════════════════════════════════
+function renderOrders(orders) {
+  ordersList.innerHTML = '';
+  if (!orders || orders.length === 0) {
+    ordersEmpty.style.display = 'flex';
+    return;
+  }
+  ordersEmpty.style.display = 'none';
+
+  [...orders].reverse().forEach(order => {
+    const div = document.createElement('div');
+    div.className = 'order-card';
+    const date = new Date(order.date).toLocaleString('es-ES', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' });
+    div.innerHTML = `
+      <div class="order-id">${order.id}</div>
+      <span class="order-status-pill ${order.status}">${statusLabel(order.status)}</span>
+      <div class="order-total">${order.total.toFixed(2)}€</div>
+      <div class="order-date">${date}</div>
+    `;
+    ordersList.appendChild(div);
+  });
+}
+
+function statusLabel(s) {
+  return { pendiente:'⏳ Pendiente', enviado:'🚚 Enviado', completado:'✅ Completado', cancelado:'❌ Cancelado' }[s] || s;
+}
+
+// ═══════════════════════════════════════════════════════════
+// FETCH CARRITO Y PEDIDOS
+// ═══════════════════════════════════════════════════════════
+async function refreshCart() {
+  try {
+    const r = await fetch(`${API_BASE}/api/cart`);
+    const cart = await r.json();
+    renderCart(cart);
+  } catch {}
+}
+
+async function refreshOrders() {
+  try {
+    const r = await fetch(`${API_BASE}/api/orders`);
+    const data = await r.json();
+    renderOrders(data.orders || []);
+  } catch {}
+}
+
+// ═══════════════════════════════════════════════════════════
+// MENSAJES DE CHAT
+// ═══════════════════════════════════════════════════════════
+function appendMessage(role, text) {
+  // Quitar welcome card en el primer mensaje
+  if (welcomeCard && welcomeCard.parentNode) welcomeCard.remove();
+
+  const row = document.createElement('div');
+  row.className = `msg-row ${role === 'user' ? 'user' : 'bot'}`;
+
+  const avatar = document.createElement('div');
+  avatar.className = 'msg-avatar';
+  avatar.textContent = role === 'user' ? '👤' : '🤖';
+
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  // Soportar saltos de línea del bot
+  bubble.innerHTML = text.replace(/\n/g, '<br>');
+
+  row.appendChild(avatar);
+  row.appendChild(bubble);
+  chatMessages.appendChild(row);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  return row;
+}
+
+function showTyping() {
+  const row = document.createElement('div');
+  row.className = 'msg-row bot';
+  row.id = 'typing-indicator';
+  row.innerHTML = `
+    <div class="msg-avatar">🤖</div>
+    <div class="msg-bubble typing-indicator">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>
+  `;
+  chatMessages.appendChild(row);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function removeTyping() {
+  const el = document.getElementById('typing-indicator');
+  if (el) el.remove();
+}
+
+// ═══════════════════════════════════════════════════════════
+// ENVIAR MENSAJE
+// ═══════════════════════════════════════════════════════════
+async function sendMessage(text) {
+  if (!text.trim() || isLoading) return;
+
+  isLoading = true;
+  sendBtn.disabled = true;
+  chatInput.value = '';
+  chatInput.style.height = 'auto';
+
+  appendMessage('user', text.trim());
+  showTyping();
+
+  try {
+    const res = await fetch(`${API_BASE}/api/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text.trim(), sessionId: SESSION_ID }),
+    });
+
+    removeTyping();
+
+    if (!res.ok) {
+      const err = await res.json();
+      appendMessage('bot', `❌ ${err.error || 'Error del servidor.'}`);
+      showToast('⚠️ Error al conectar con el agente', 4000);
+      return;
+    }
+
+    const data = await res.json();
+    appendMessage('bot', data.reply || '…');
+
+    // Actualizar UI en base a la respuesta
+    if (data.cart) renderCart(data.cart);
+    await refreshOrders();
+
+  } catch (err) {
+    removeTyping();
+    appendMessage('bot', '❌ No pude conectar con el servidor. Asegúrate de que esté en marcha.');
+    showToast('❌ Sin conexión con el servidor');
+  } finally {
+    isLoading = false;
+    sendBtn.disabled = false;
+    chatInput.focus();
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// EVENT LISTENERS
+// ═══════════════════════════════════════════════════════════
+
+// Enviar con Enter (sin Shift)
+chatInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage(chatInput.value);
+  }
+});
+
+// Auto-resize textarea
+chatInput.addEventListener('input', () => {
+  chatInput.style.height = 'auto';
+  chatInput.style.height = Math.min(chatInput.scrollHeight, 100) + 'px';
+});
+
+sendBtn.addEventListener('click', () => sendMessage(chatInput.value));
+
+// Categorías sidebar
+document.querySelectorAll('.cat-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    sendMessage(btn.dataset.msg);
+  });
+});
+
+// Acciones rápidas
+document.querySelectorAll('.quick-btn').forEach(btn => {
+  btn.addEventListener('click', () => sendMessage(btn.dataset.msg));
+});
+
+// Chips de sugerencias
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => sendMessage(chip.dataset.msg));
+});
+
+// Tabs derecho
+document.getElementById('tab-cart-btn').addEventListener('click', () => {
+  document.getElementById('tab-cart-btn').classList.add('active');
+  document.getElementById('tab-orders-btn').classList.remove('active');
+  document.getElementById('tab-cart').classList.add('active');
+  document.getElementById('tab-orders').classList.remove('active');
+  document.getElementById('tab-cart-btn').setAttribute('aria-selected', 'true');
+  document.getElementById('tab-orders-btn').setAttribute('aria-selected', 'false');
+});
+document.getElementById('tab-orders-btn').addEventListener('click', () => {
+  document.getElementById('tab-orders-btn').classList.add('active');
+  document.getElementById('tab-cart-btn').classList.remove('active');
+  document.getElementById('tab-orders').classList.add('active');
+  document.getElementById('tab-cart').classList.remove('active');
+  document.getElementById('tab-orders-btn').setAttribute('aria-selected', 'true');
+  document.getElementById('tab-cart-btn').setAttribute('aria-selected', 'false');
+  refreshOrders();
+});
+
+// Botón Confirmar Pedido
+document.getElementById('btn-checkout').addEventListener('click', () => {
+  sendMessage('Quiero confirmar y realizar el pedido con los artículos de mi carrito');
+});
+
+// Botón Vaciar Carrito
+document.getElementById('btn-clear-cart').addEventListener('click', async () => {
+  if (!confirm('¿Seguro que quieres vaciar el carrito?')) return;
+  await fetch(`${API_BASE}/api/cart`, { method: 'DELETE' });
+  await refreshCart();
+  showToast('🗑️ Carrito vaciado');
+});
+
+// Nueva sesión
+document.getElementById('btn-new-session').addEventListener('click', async () => {
+  if (!confirm('¿Iniciar una nueva sesión? El historial de chat se perderá.')) return;
+  await fetch(`${API_BASE}/api/session`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sessionId: SESSION_ID }),
+  });
+  chatMessages.innerHTML = '';
+  chatMessages.insertAdjacentHTML('beforeend', document.querySelector('body').innerHTML);
+  location.reload();
+});
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+(async () => {
+  await refreshCart();
+  await refreshOrders();
+  chatInput.focus();
+})();
+</script>
+</body>
+</html>

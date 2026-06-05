@@ -103,6 +103,7 @@ function generateOrderId(orders) {
  */
 async function create_order(cartItems) {
   const database = await initDb();
+  await database.read();
 
   if (!Array.isArray(cartItems) || cartItems.length === 0) {
     return {
@@ -185,6 +186,7 @@ async function create_order(cartItems) {
  */
 async function get_order_status(orderId) {
   const database = await initDb();
+  await database.read();
 
   if (!orderId) {
     return {
@@ -215,6 +217,7 @@ async function get_order_status(orderId) {
  */
 async function cancel_order(orderId) {
   const database = await initDb();
+  await database.read();
 
   if (!orderId) {
     return {
@@ -264,6 +267,7 @@ async function cancel_order(orderId) {
  */
 async function list_orders() {
   const database = await initDb();
+  await database.read();
   return {
     success: true,
     orders: database.data.orders

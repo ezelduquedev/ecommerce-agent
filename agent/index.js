@@ -99,12 +99,13 @@ const conversationHistory = [
 // ─── Llamada al LLM con soporte de Function Calling recursivo ─────────────────
 async function callGroq(messages) {
   const response = await client.chat.completions.create({
-    model: process.env.MODEL || 'llama-3.1-70b-versatile',
+    model: process.env.MODEL || 'llama-3.3-70b-versatile',
     messages,
     tools,
     tool_choice: 'auto',
+    parallel_tool_calls: false,   // evita formato incorrecto de tool calls en llama-3.3
     max_tokens: parseInt(process.env.MAX_TOKENS) || 1024,
-    temperature: parseFloat(process.env.TEMPERATURE) || 0.3,
+    temperature: 0.1,             // baja temperatura = menos alucinaciones en tool calling
   });
 
   const choice = response.choices[0];

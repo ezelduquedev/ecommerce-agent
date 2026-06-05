@@ -5,6 +5,7 @@
   "scripts": {
     "test": "jest",
     "start": "set NODE_TLS_REJECT_UNAUTHORIZED=0 && node agent/index.js",
+    "server": "set NODE_TLS_REJECT_UNAUTHORIZED=0 && node server.js",
     "test:watch": "jest --watch",
     "test:groq": "set NODE_TLS_REJECT_UNAUTHORIZED=0 && node test-groq.js"
   },
@@ -13,7 +14,9 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
+    "express": "^5.2.1",
     "groq-sdk": "^1.2.1",
     "lowdb": "^7.0.1"
   },

@@ -1,41 +1,75 @@
-# 🛒 Agente Conversacional de E-commerce
+# 🛒 ShopBot — Agente Conversacional de E-commerce con IA
 
-Agente conversacional inteligente para e-commerce que permite buscar productos, gestionar un carrito de compras y realizar pedidos mediante lenguaje natural en español.
+> Agente conversacional inteligente que permite buscar productos, gestionar un carrito de compra y realizar pedidos usando **lenguaje natural en español**, impulsado por Groq API y el modelo `llama-3.3-70b-versatile`.
+
+[![Tests](https://img.shields.io/badge/tests-40%20passed-brightgreen)](#-tests)
+[![Node](https://img.shields.io/badge/node-%3E%3D20-blue)](https://nodejs.org)
+[![Groq](https://img.shields.io/badge/LLM-llama--3.3--70b-purple)](https://console.groq.com)
+
+---
+
+## ✨ Características
+
+- 🗣️ **Chat en lenguaje natural** — el agente decide qué herramienta usar de forma autónoma
+- 🔍 **Búsqueda inteligente** — filtros por categoría, precio máximo, rating mínimo y palabras clave
+- 🛒 **Carrito en tiempo real** — añadir, eliminar y ver el carrito con totales automáticos
+- 📦 **Pedidos persistentes** — IDs tipo `ORD-YYYYMMDD-XXXX` guardados en `db/db.json` con `lowdb`
+- 🌐 **Interfaz web** — UI dark mode premium accesible en `http://localhost:3000`
+- ✅ **40 tests unitarios** — cobertura al 100% con Jest
+
+---
 
 ## 🚀 Stack Tecnológico
 
-| Tecnología | Uso |
-|---|---|
-| **Node.js 20** | Runtime principal |
-| **Groq API** (llama-3.1-70b) | Motor LLM con Function Calling |
-| **lowdb** | Persistencia de pedidos en JSON |
-| **Jest** | Testing unitario e integración |
+| Tecnología | Versión | Uso |
+|---|---|---|
+| **Node.js** | ≥ 20 | Runtime principal |
+| **Groq API** | SDK 1.x | Motor LLM — `llama-3.3-70b-versatile` |
+| **Express** | 4.x | Servidor HTTP REST API |
+| **lowdb** | 7.x | Persistencia de pedidos en JSON local |
+| **dotenv** | 17.x | Gestión de variables de entorno |
+| **Jest** | 30.x | Testing unitario |
+
+---
 
 ## 📁 Estructura del Proyecto
 
 ```
 ecommerce-agent/
 ├── agent/
-│   ├── index.js        # Bucle principal de conversación
-│   ├── tools.js        # Schemas JSON de las 11 herramientas
+│   ├── index.js        # Bucle CLI de conversación (readline)
+│   ├── tools.js        # Schemas JSON de las 11 herramientas (Function Calling)
 │   └── prompts.js      # System Prompt del agente ShopBot
 ├── modules/
-│   ├── recommender/    # Lógica de búsqueda y recomendaciones (Día 2)
-│   ├── cart/           # Gestión del carrito (Día 3)
-│   └── orders/         # Procesamiento de pedidos (Día 4)
+│   ├── recommender/    # Búsqueda y recomendaciones (Día 2)
+│   │   └── index.js    # search_products, get_product_details, get_top_products
+│   ├── cart/           # Gestión del carrito en memoria (Día 3)
+│   │   └── index.js    # add_to_cart, remove_from_cart, view_cart, clear_cart
+│   └── orders/         # Persistencia de pedidos con lowdb (Día 4)
+│       └── index.js    # create_order, get_order_status, cancel_order, list_orders
 ├── data/
-│   └── catalog.json    # Catálogo de 25 productos mock
-├── db/                 # Base de datos JSON (generada en runtime)
-├── test-groq.js        # Script de verificación de API
+│   └── catalog.json    # 25 productos en 5 categorías
+├── db/
+│   └── db.json         # Base de datos de pedidos (generada en runtime)
+├── public/
+│   └── index.html      # Interfaz web de chat (Día 6)
+├── tests/
+│   ├── recommender.test.js  # 20 tests del motor de búsqueda
+│   ├── cart.test.js         # 10 tests del carrito
+│   └── orders.test.js       # 10 tests de pedidos (con mocks de lowdb)
+├── server.js           # Servidor Express con API REST (Día 6)
+├── test-groq.js        # Script de verificación de conexión API
 ├── .env.example        # Plantilla de variables de entorno
 └── package.json
 ```
+
+---
 
 ## ⚙️ Instalación y Configuración
 
 ### 1. Clonar e instalar dependencias
 ```bash
-git clone <repositorio>
+git clone https://github.com/ezelduquedev/ecommerce-agent
 cd ecommerce-agent
 npm install
 ```
@@ -44,25 +78,38 @@ npm install
 ```bash
 cp .env.example .env
 ```
-Edita el archivo `.env` y añade tu API Key de Groq:
+Edita `.env` y añade tu API Key de Groq:
 ```ini
 GROQ_API_KEY=gsk_tu_clave_aqui
 ```
-Obtén tu clave gratuita en: https://console.groq.com
+> Obtén tu clave gratuita en: https://console.groq.com
 
 ### 3. Verificar la conexión con Groq
 ```bash
-node test-groq.js
+npm run test:groq
 ```
 
-### 4. Iniciar el agente
+---
+
+## ▶️ Modo de Uso
+
+### 🌐 Interfaz Web (recomendado)
+```bash
+npm run server
+# → Abre http://localhost:3000 en el navegador
+```
+
+La interfaz incluye:
+- Panel de chat con burbujas y typing indicator animado
+- Sidebar de carrito en tiempo real (se actualiza en cada respuesta)
+- Panel de pedidos con estados visuales (pendiente / enviado / completado / cancelado)
+- Acciones rápidas por categoría y chips de sugerencia
+- Botones de confirmar pedido y vaciar carrito
+
+### 💻 Cliente de Terminal
 ```bash
 npm start
-# o directamente:
-node agent/index.js
 ```
-
-## 💬 Uso del Agente
 
 ```
 ╔════════════════════════════════════════════╗
@@ -70,49 +117,127 @@ node agent/index.js
 ║   Escribe "salir" para terminar            ║
 ╚════════════════════════════════════════════╝
 
-Tú: Hola, busco unos auriculares buenos
-ShopBot: ¡Hola! Tengo unos auriculares excelentes...
-
-Tú: ¿Cuánto cuestan los Sony WH-1000XM5?
-ShopBot: Los Sony WH-1000XM5 tienen un precio de 279,99€...
-
-Tú: salir
-👋 ¡Hasta pronto! Gracias por usar ShopBot.
+Tú: Busco auriculares por menos de 150€
+ShopBot: Encontré estas opciones:
+1. 🎧 Altavoz Portátil JBL Charge 5 — 149.99€ ⭐ 4.6
+...
 ```
 
+---
+
 ## 🧪 Tests
+
 ```bash
 npm test
 ```
 
+```
+PASS tests/orders.test.js
+PASS tests/recommender.test.js
+PASS tests/cart.test.js
+
+Test Suites: 3 passed, 3 total
+Tests:       40 passed, 40 total
+```
+
+---
+
+## 🔌 API REST
+
+El servidor Express expone los siguientes endpoints:
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| `POST` | `/api/chat` | Turno conversacional. Body: `{ message, sessionId }` |
+| `GET` | `/api/cart` | Estado actual del carrito |
+| `DELETE` | `/api/cart` | Vaciar el carrito |
+| `GET` | `/api/orders` | Listar todos los pedidos |
+| `GET` | `/api/orders/:id` | Estado de un pedido específico |
+| `GET` | `/api/products` | Catálogo completo (query: `?category=&limit=`) |
+| `DELETE` | `/api/session` | Reiniciar sesión de chat |
+
+### Ejemplo de uso
+
+```bash
+# Enviar mensaje al chat
+curl -X POST http://localhost:3000/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Busco libros de ciencia ficción", "sessionId": "demo"}'
+
+# Ver carrito
+curl http://localhost:3000/api/cart
+
+# Ver todos los pedidos
+curl http://localhost:3000/api/orders
+```
+
+---
+
+## 🛠️ Herramientas del Agente (Function Calling)
+
+El agente dispone de 11 herramientas que el LLM invoca de forma autónoma:
+
+| Herramienta | Módulo | Descripción |
+|---|---|---|
+| `search_products` | recommender | Buscar productos con filtros |
+| `get_product_details` | recommender | Detalle completo de un producto |
+| `get_top_products` | recommender | Top N productos por rating o precio |
+| `add_to_cart` | cart | Añadir producto al carrito |
+| `remove_from_cart` | cart | Eliminar un producto del carrito |
+| `view_cart` | cart | Ver contenido y total del carrito |
+| `clear_cart` | cart | Vaciar el carrito completo |
+| `create_order` | orders | Crear pedido desde el carrito |
+| `get_order_status` | orders | Consultar estado de un pedido |
+| `cancel_order` | orders | Cancelar pedido (solo si 'pendiente') |
+| `list_orders` | orders | Listar todos los pedidos |
+
+---
+
 ## 📦 Catálogo de Productos
 
-El catálogo incluye **25 productos** en 5 categorías:
-- 📱 **Electrónica** (5 productos)
-- 👕 **Ropa** (5 productos)
-- 🏠 **Hogar** (5 productos)
-- 🏃 **Deportes** (5 productos)
-- 📚 **Libros** (5 productos)
+25 productos en 5 categorías:
 
-## 🗓️ Estado del Proyecto
+| Categoría | Nº Productos |
+|---|---|
+| 📱 Electrónica | 5 |
+| 👕 Ropa | 5 |
+| 🏠 Hogar | 5 |
+| 🏃 Deportes | 5 |
+| 📚 Libros | 5 |
 
-| Día | Tarea | Estado |
-|---|---|---|
-| **Día 1** | Fundamentos y arquitectura base | ✅ Completado |
-| **Día 2** | Módulo de recomendaciones | 🔄 Pendiente |
-| **Día 3** | Gestión de carrito con persistencia | 🔄 Pendiente |
-| **Día 4** | Sistema de pedidos con lowdb | 🔄 Pendiente |
-| **Día 5** | Tests unitarios con Jest | 🔄 Pendiente |
-| **Día 6** | Refinamiento y casos de error | 🔄 Pendiente |
-| **Día 7** | Documentación final y entrega | 🔄 Pendiente |
+---
 
 ## 🔑 Variables de Entorno
 
-| Variable | Descripción | Valor por defecto |
+| Variable | Descripción | Por defecto |
 |---|---|---|
-| `GROQ_API_KEY` | Clave de API de Groq | — (requerida) |
-| `MODEL` | Modelo LLM a usar | `llama-3.1-70b-versatile` |
-| `MAX_TOKENS` | Máx. tokens por respuesta | `1024` |
-| `TEMPERATURE` | Temperatura del modelo (0-1) | `0.3` |
-| `DB_PATH` | Ruta de la base de datos JSON | `./db/orders.json` |
-| `NODE_ENV` | Entorno de ejecución | `development` |
+| `GROQ_API_KEY` | Clave de API de Groq (requerida) | — |
+| `MODEL` | Modelo LLM | `llama-3.3-70b-versatile` |
+| `MAX_TOKENS` | Tokens máximos por respuesta | `1024` |
+| `PORT` | Puerto del servidor Express | `3000` |
+
+---
+
+## 🗓️ Desarrollo — Plan de 7 Días
+
+| Día | Tarea | Estado |
+|---|---|---|
+| Día 1 | Arquitectura base, catálogo 25 productos, bucle CLI | ✅ |
+| Día 2 | Módulo recommender — búsqueda real, 20 tests | ✅ |
+| Día 3 | Módulo cart — carrito en memoria, 10 tests | ✅ |
+| Día 4 | Módulo orders — persistencia lowdb, 10 tests | ✅ |
+| Día 5 | Integración completa, SYSTEM_PROMPT v2, fix lowdb sync | ✅ |
+| Día 6 | Servidor Express REST + Interfaz Web chat interactivo | ✅ |
+| Día 7 | README final, commit `v1.0.0`, entrega | ✅ |
+
+---
+
+## 👤 Autor
+
+**Ezel Alexander Duque Arias** — [@ezelduquedev](https://github.com/ezelduquedev)
+
+---
+
+## 📄 Licencia
+
+ISC
